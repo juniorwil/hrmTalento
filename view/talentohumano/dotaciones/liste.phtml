@@ -1,0 +1,81 @@
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'vc',
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+?>
+<?php echo $this->render('layout/tabla_c') ?>
+
+    <?php foreach ($this->datos as $dato){ ?>
+        <tr>
+            <td><?php echo $dato["CedEmp"] ?></td>            
+            <td><?php echo $dato["nombre"].' '.$dato["apellido"] ?></td>                        
+            <td><?php echo $dato["nomCar"] ?></td>  
+            <td><?php echo $dato["FecUdot"] ?></td> 
+            <td><?php 
+                $arreglo[ $dato["idGdot"] ] = $dato["nomGdot"];
+                $select = $form->get('idGdot2')->setAttribute("name", "idGdot".$dato["id"])
+                                              ->setAttribute("id", "idGdot".$dato["id"])
+                                              ->setValueOptions($arreglo);
+                                              
+                echo $this->formSelect($select);                
+                echo $this->formElementErrors($select);            
+            
+            ?></td> 
+            <td>
+              <?php 
+              if ($dato["numDot"] < $dato["numDotP"] ){ ?>  
+                <a href="javascript:entregar(<?php echo $dato["id"] ?>)"> <?php echo $this->render('layout/iok') ?> </a>
+              <?php }else{
+                  echo 'Proximo año';
+              }              
+              ?>  
+            </td>            
+        </tr>
+    <?php } ?>
+<?php echo $this->render('layout/tabla_p') ?>         
+        
+<?php 
+$this->ncol='null,null,null,null,';
+echo $this->render('layout/tabla_tb') ?>  
+        
+<script>
+  // Editar registro  
+  function entregar(id)
+  { 
+     $(function() {         
+        var idGdot = $("#idGdot"+id).val();
+        if ( idGdot==0)
+        {
+            alert('Debe selecciona la dotación a entregar');
+            return false;
+        }
+        if (!confirm('Esta seguro desea entrega esta dotación'))
+        {           
+            return false;
+        }
+        var parametros = {
+            "idEmp"  : id,               
+            "idGdot" : idGdot,    
+        };
+        $.ajax({
+           data:  parametros, 
+           url:  '<?php echo $this->basePath() ?><?php echo $this->lin?>g',
+           type: 'post',
+           beforeSend: function () {
+               },
+           success:  function (response) {             
+               }
+           }); // Fin  agregar nuevo componente al sistema                        
+           alert("Dotación registrada de forma correcta !")
+           location.reload();
+          
+     });  
+  }  
+ </script>          

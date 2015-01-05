@@ -1,0 +1,272 @@
+<?php echo $this->render('layout/titulo') ?>
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'vc',
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+
+<!-- DOCUMENTO DE ESTUDIO-->
+<?php foreach ($this->datSol as $dato){ ?>
+<?php } ?>
+    <table class="table table-striped table-bordered table-hover">
+        <tr class="text-success"  >
+            <td><span class="icon-ok green"> Cargo vacante :</span> <?php echo $dato['nomCar']; ?></td>
+            <td><span class="icon-ok green"> Sede :</span> <?php echo $dato['nomSed']; ?></td>
+        </tr>
+        <tr class="text-success" >    
+            <td><span class="icon-ok green"> Fecha :</span><?php echo $dato['fecDoc']; ?></td>
+            <td><span class="icon-ok green"> Numero de vacantes :</span><?php echo $dato['vacantes']; ?> </td>
+        </tr>
+        <tr class="text-success" >    
+            <td><span class="icon-ok green"> Aspirante :</span><?php echo $dato['cedula'].' - '.$dato['nombre'].' '.$dato['apellido']; ?></td>
+            <td> </td>
+        </tr>        
+    </table> 
+
+
+<?php echo $this->render('layout/tabla_c') ?>
+    
+   <?php 
+   $tit = '';
+   $it  = 1;   
+   $numero=1; // Id de todos los elementos
+   foreach ($this->datos as $dato){ ?>
+       <?php if ($tit!=$dato["nomAsp"]){ ?>
+         <tr><td><strong><?php $tit=$dato["nomAsp"];$ist=1; echo $it.' '.$dato["nomAsp"];$it++; ?></strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+          <?php } ?>
+        <tr>
+            <td><?php echo ($it-1).'.'.$ist.' '.$dato["nombre"]; $ist++; ?></td>
+            <td>
+              <?php if ($dato["tipo"]==1){  // Predeterminado texto cuando no hay formularios anclados                
+                                   echo $dato["textCar"];               
+               }?>                           
+              <?php if ($dato["tipo"]==3){  // Lista    
+                // Armar valores  
+                //echo  $dato["lista"];
+                $cadena = $dato["lista"];
+                $titulo='';$sw=0;
+                $arreglo='';$y=1;
+                for( $i=0; $i<=strlen($cadena); $i++)
+                {
+	            $caracter = substr($cadena,$i,1);      
+                    if ($caracter!=',')
+                       $titulo = $titulo.$caracter;
+                    else 
+                       $sw=1;         
+                    if ( ($sw==1) ){     
+                       $arreglo[$y] = $titulo;
+                       $titulo='';$sw=0;$y++;
+                    }
+                } 
+                $arreglo[$y] = $titulo;                
+                //  
+                $select = $form->get('estado')->setAttribute("value", 0 )
+                                              ->setAttribute("name", "lista".$dato["id"] )
+                                              ->setAttribute("value", $dato["listRes"] )
+                                              ->setValueOptions($arreglo);
+                echo $formLabel->openTag();
+                echo $formLabel->closeTag();
+                echo $this->formSelect($select);                
+                echo $this->formElementErrors($select);
+               }?>                                            
+              <?php if ($dato["tipo"]==2){  // Aspectos de la plantilla ?>   
+              <?php if ($dato["aC"]!=''){ ?>  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "a".$dato["id"])
+                                                ->setAttribute("value", $dato["aR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>
+                     <?php 
+                     if ($dato["aC"]!='')               
+                          echo $dato["aC"] ;
+                        else 
+                          echo $dato["a"]; ?>                  
+                  <p class="muted">
+                  </p>    
+              </div>            
+              <?php } ?>  
+              <?php if ($dato["bC"]!=''){ ?>  
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "b".$dato["id"])
+                                                ->setAttribute("value", $dato["bR"]);
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>
+                     <?php 
+                     if ($dato["bC"]!='')               
+                          echo $dato["bC"] ;
+                        else 
+                          echo $dato["b"]; ?>                                    
+                   <p class="muted">
+
+                  </p>    
+              </div>      
+              <?php } ?>
+              <?php if ($dato["cC"]!=''){ ?>  
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "c".$dato["id"] )
+                                                ->setAttribute("value", $dato["cR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>
+                     <?php 
+                     if ($dato["cC"]!='')               
+                          echo $dato["cC"] ;
+                        else 
+                          echo $dato["c"]; ?>                                                      
+                  <p class="muted">
+                  </p>    
+              </div>                          
+              <?php } ?>  
+              <?php 
+              if ( $dato["dC"]!='') { ?>  
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "d".$dato["id"] )
+                                                ->setAttribute("value", $dato["dR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>
+                     <?php 
+                     if ($dato["dC"]!='')               
+                          echo $dato["dC"] ;
+                        else 
+                          echo $dato["d"]; ?>                                                      
+                  <p class="muted">
+                  </p> 
+              </div>   
+              <?php } ?>  
+              <?php if ($dato["eC"]!=''){ ?>  
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "e".$dato["id"] )
+                                                ->setAttribute("value", $dato["eR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>
+                     <?php 
+                     if ($dato["eC"]!='')               
+                          echo $dato["eC"] ;
+                        else 
+                          echo $dato["e"]; ?>                                                      
+                  <p class="muted">
+                  </p>    
+              </div>                                                     
+              <?php } ?>
+              <?php } // Fin  opcion 3?>
+              
+              
+              <?php if ($dato["tipo"]==4){  // Aspectos cargados en el cargo ?>   
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "aC".$dato["id"] )
+                                                ->setAttribute("value", $dato["aR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>(a)
+                  <p class="muted">
+                     <?php echo $dato["aC"] ?>
+                  </p>    
+              </div>                    
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "bC".$dato["id"] )
+                                                ->setAttribute("value", $dato["bR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>(b)
+                  <p class="muted">
+                     <?php echo $dato["bC"] ?>
+                  </p>    
+              </div>                                     
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "cC".$dato["id"] )
+                                                ->setAttribute("value", $dato["cR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>(c)
+                  <p class="muted">
+                     <?php echo $dato["cC"] ?>
+                  </p>    
+              </div>                                     
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "dC".$dato["id"] )
+                                                ->setAttribute("value", $dato["dR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>(d)
+                  <p class="muted">
+                     <?php echo $dato["dC"] ?>
+                  </p>    
+              </div>                                                     
+              <hr />  
+              <div class="form_element">
+                 <?php
+                  $select = $form->get('check1')->setAttribute("name", "eC".$dato["id"] )
+                                                ->setAttribute("value", $dato["eR"] );
+                  echo $this->formCheckbox($select);
+                  ?><span class="lbl"></span>(e)
+                  <p class="muted">
+                     <?php echo $dato["eC"] ?>
+                  </p>    
+              </div>                                                     
+              
+              <?php } // Fin  opcion 4?>              
+            </td>
+            <td><?php
+                  echo ($this->formRow($form->get('comenN')
+                                              ->setAttribute("name", "res".$dato["id"] )
+                                              ->setAttribute("value", $dato["texRes"] )));                
+               ?> 
+            </td>            
+            <td>
+              <?php
+                $select = $form->get('estado')->setAttribute("value", $dato["estado"])
+                                              ->setAttribute("id", "estado".$dato["id"])
+                                              ->setAttribute("name", "estado".$dato["id"])
+                                              ->setValueOptions(array("0"=>"---","1"=>"Cumple","2"=>"No cumple")) ;
+                echo $formLabel->openTag();
+                echo $formLabel->closeTag();
+                echo $this->formSelect($select);                
+                echo $this->formElementErrors($select);
+              ?>                
+            </td>
+        </tr>
+    <?php 
+      $numero++; } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>          
+
+        
+        
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>          
+        
+<?php echo $this->form()->closeTag() ?>
+
+<?php 
+$this->lin = $this->lin.'i/'.$this->idCheq;
+echo $this->render('layout/iregresar') ?>  

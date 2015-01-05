@@ -1,0 +1,37 @@
+<?php echo $this->render('layout/titulo') ?>
+
+<?php echo $this->render('layout/tabla_c') ?>
+
+    <?php foreach ($this->datos as $dato){ ?>
+        <tr>
+            <td><?php echo $dato["nombre"] ?></td>
+            <td><?php  
+                switch ($dato["tipo"]) {
+                  case 1:
+                     echo "INTERPRETACION";
+                     break;
+                  case 2:
+                     echo "LISTA DE CHEQUEO";
+                     break;
+                  case 3:
+                     echo "EVALUACION POR COMPETENCIAS";
+                     break;                                         
+                
+                }                                        
+                    ?></td>
+            <td>
+               <?php if ($dato["tipo"]==2) { ?>  
+                  <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>o/<?php echo $dato["id"].".".$this->idCar?>"> <?php echo $this->render('layout/iitems') ?> </a>                         
+               <?php } ?>                  
+            </td>                
+            
+        </tr>
+    <?php } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>
+
+<?php 
+$this->ncol='null,null,null,';
+echo $this->render('layout/tabla_tb') ?>   
+
+<?php echo $this->render('layout/iregresar') ?> 

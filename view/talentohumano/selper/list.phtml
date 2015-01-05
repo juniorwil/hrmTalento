@@ -1,0 +1,44 @@
+<?php echo $this->render('layout/titulo') ?>
+
+
+<?php echo $this->render('layout/tabla_c') ?>
+
+    <?php foreach ($this->datos as $dato){ ?>
+        <tr>
+            <td><?php echo $dato["id"] ?></td>            
+            <td><?php echo $dato["fecDoc"] ?></td>
+            <td><?php echo $dato["fecApr"] ?></td>
+            <td><?php echo $dato["nomSed"] ?></td>
+            <td><?php echo $dato["nomCcos"] ?></td>            
+            <td><?php echo $dato["nomCar"] ?></td>
+            <td>
+                <?php if ($dato["estado"]==0){ ?>
+                   <?php echo $this->render('layout/ipendiente') ?>
+                <?php } ?>
+                <?php if ($dato["estado"]==1){ ?>
+                   <?php echo $this->render('layout/iaprobado') ?>                
+                <?php } ?>
+            </td>    
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>i/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/ipersonal');
+                 if ( $dato["numAsp"] > 0 )
+                 {
+                     echo '('.$dato["numAsp"].')';  
+                     echo '<br />';
+                     foreach($this->datPos as $dat)
+                     {
+                        if ( $dat["id"] == $dato["id"] ) 
+                           echo '<span class="muted" >('.$dat["nombre"].' '.$dat["apellido"].')<spam /><br />';  
+                     }
+                 }
+                 ?> </a>
+            </td>
+
+        </tr>
+    <?php } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>
+    
+<?php 
+$this->ncol='null,null,null,null,null,null,';
+echo $this->render('layout/tabla_tb') ?>        

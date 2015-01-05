@@ -1,0 +1,172 @@
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'vr/'.$this->id,
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+ 
+<?php echo $this->render('layout/titulo') ?>
+
+<!-- DOCUMENTO DE ESTUDIO-->
+<?php foreach ($this->datSol as $dato){ ?>
+<?php } ?>
+    <table class="table table-striped table-bordered table-hover">
+        <tr class="text-success"  >
+            <td><span class="icon-ok green"> Cargo vacante :</span> <?php echo $dato['nomCar']; ?></td>
+            <td><span class="icon-ok green"> Sede :</span> <?php echo $dato['nomSed']; ?></td>
+        </tr>
+        <tr class="text-success" >    
+            <td><span class="icon-ok green"> Fecha :</span><?php echo $dato['fecDoc']; ?></td>
+            <td><span class="icon-ok green"> Numero de vacantes :</span><?php echo $dato['vacantes']; ?> </td>
+        </tr>
+        <tr class="text-success" >    
+            <td><span class="icon-ok green"> Aspirante :</span><?php echo $dato['cedula'].' - '.$dato['nombre'].' '.$dato['apellido']; ?></td>
+            <td> </td>
+        </tr>        
+    </table> 
+
+<!-- EXPERIENCIA LABORAL -->
+<?php 
+$it = 1;
+foreach ($this->datExp as $dato){ ?>
+<hr />
+<?php 
+$this->ttablas="REFERENCIA ".$it.", Cargo desempeñado, Funciones basicas";
+$it++;
+echo $this->render('layout/tabla_c') ?>
+<tr>
+    <td>
+     <strong>Empresa:</strong>       
+     <?php echo $dato['empresa']; ?>
+     <br />    
+     <strong>Telefonos:</strong>       
+     <?php echo $dato['telefonos']; ?>
+     <br />    
+     <strong>Periodo:</strong>       
+     <?php echo $dato['fechaI'].' '.$dato['fechaF']; ?>     
+</td>
+<td>
+<div class="col-sm-8">     
+  <?php echo ($this->formRow($form->get('comenN')->setAttribute("value", $dato["cargo"] )
+    ->setAttribute("id", "cargo".$dato["id"])
+    ->setAttribute("name", "cargo".$dato["id"])
+    ));
+  ?>            
+</div>    
+</td>
+<td>
+<div class="col-sm-8">         
+  <?php echo ($this->formRow($form->get('comenN')->setAttribute("value", $dato["funciones"])
+    ->setAttribute("id", "funcion".$dato["id"])
+    ->setAttribute("name", "funcion".$dato["id"])
+    ));
+  ?>
+</div>    
+</td>            
+</tr>
+<tr>
+  <td><strong>Motivo de retiro:</strong
+<div class="col-sm-8">           
+  <?php echo ($this->formRow($form->get('comenN')->setAttribute("value", $dato["motivo"])
+    ->setAttribute("id", "motivo".$dato["id"])
+    ->setAttribute("name", "motivo".$dato["id"])
+    ));
+  ?>
+</div>    
+   </td>
+  <td>
+<div class="col-sm-6">                 
+<strong>Desempeño:</strong>      
+  <?php
+    $select = $form->get('estado')->setAttribute("value", $dato["des"] )
+        ->setAttribute("id", "desemp".$dato["id"])
+        ->setAttribute("name", "desemp".$dato["id"])
+        ->setValueOptions(array("0"=>"Seleccione", "1"=>"Excelente", "2"=>"Bueno", "3"=>"Regular" ,"4"=>"Malo")) ;    
+    echo $this->formSelect($select);                
+    echo $this->formElementErrors($select);    
+  ?>    
+</div>    
+  </td>      
+  <td>
+<div class="col-sm-6">       
+      <strong>¿ La empresa lo contrataria nuevamente ? </strong>  
+  <?php
+    $select = $form->get('estado')->setAttribute("value", $dato["contra"] )
+        ->setAttribute("id", "contra".$dato["id"])
+        ->setAttribute("name", "contra".$dato["id"])
+        ->setValueOptions(array("0"=>"Seleccione", "1"=>"Si", "2"=>"No")) ;    
+    echo $this->formSelect($select);                
+    echo $this->formElementErrors($select);    
+  ?>    
+</div>      
+  </td> 
+</tr>  
+<tr> 
+  <td colspan="2">
+<div class="col-sm-8">       
+      <strong>Observaciónes:</strong>  
+  <?php echo ($this->formRow($form->get('comenN')->setAttribute("value", $dato["descripcion"])
+    ->setAttribute("id", "observa".$dato["id"])
+    ->setAttribute("name", "observa".$dato["id"])    ));
+  ?>                
+</div>      
+  </td>
+  <td></td>
+</tr>  
+<tr> 
+  <td><strong>Nombre del informante:</strong>  
+  <?php
+    $name = $form->get('nombre2')->setAttribute("id", "nomInf".$dato["id"])
+                                ->setAttribute("name", "nomInf".$dato["id"])
+                                ->setAttribute("class", "span10")
+                                ->setAttribute("value", $dato["nomInf"]);
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);?>
+  </td>          
+  <td><strong>Cargo del informante:</strong>  
+  <?php
+    $name = $form->get('nombre2')->setAttribute("id", "carInf".$dato["id"])
+                                ->setAttribute("name", "carInf".$dato["id"])
+                                ->setAttribute("class", "span10")
+                                ->setAttribute("value", $dato["carInf"]);            
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);?>
+  </td>          
+  <td><strong>Telefono del informante:</strong>  
+  <?php
+    $name = $form->get('nombre2')->setAttribute("id", "telefono".$dato["id"])
+                                ->setAttribute("name", "telefono".$dato["id"])
+                                ->setAttribute("class", "span10")
+                                ->setAttribute("value", $dato["telInf"]);            
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);?>
+  </td>          
+  
+</tr>    
+<?php echo $this->render('layout/tabla_p') ?>
+<?php } ?>    
+
+                                                        
+    
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>  
+    
+<?php echo $this->form()->closeTag() ?>    
+        
+<?php 
+$this->lin = $this->lin.'i/'.$this->idCheq;
+echo $this->render('layout/iregresar') ?>    

@@ -1,0 +1,4 @@
+[31-May-2014 10:30:07 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home/tecnolog/public_html/nis/module/Talentohumano/view/talentohumano/lcheq/index.phtml on line 1
+[05-Jun-2014 19:30:37 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home/tecnolog/public_html/nis/module/Talentohumano/view/talentohumano/lcheq/index.phtml on line 1
+[26-Jun-2014 04:44:27 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home/tecnolog/public_html/nis/module/Talentohumano/view/talentohumano/lcheq/index.phtml on line 1
+[12-Jul-2014 06:20:28 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home/tecnolog/public_html/nis/module/Talentohumano/view/talentohumano/lcheq/index.phtml on line 1

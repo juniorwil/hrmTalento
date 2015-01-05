@@ -1,0 +1,31 @@
+<?php echo $this->render('layout/tabla_c') ?>
+
+    <?php foreach ($this->datos as $dato){ ?>
+        <tr>
+            <td><?php echo $dato["cedula"] ?></td>            
+            <td>
+              <?php echo $dato["nombre"]?>            
+            </td>
+            <td><?php echo $dato["apellido"] ?></td>
+            <td>
+                <?php // Parametros para impresion de documento 
+                $this->idR = 16; // Id del reporte
+                $this->idP = $dato["id"];
+                echo $this->render('layout/ipdf'); // Fin parametros ?>
+            </td>                           
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>a/<?php echo $dato["id"]?>" target='_blank'><?php echo $this->render('layout/ieditar') ?> </a>
+            </td>    
+            <td>
+             <?php if ($dato["idEmp"]==0){ ?>   
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>d/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/ieliminar') ?> </a>
+             <?php } ?>                   
+            </td>            
+        </tr>
+    <?php } ?>        
+         
+<?php echo $this->render('layout/tabla_p') ?>        
+        
+<?php 
+$this->ncol='null,null,null,null,';
+echo $this->render('layout/tabla_tb') ?>        

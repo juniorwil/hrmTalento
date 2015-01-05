@@ -1,0 +1,173 @@
+<script src="<?php echo $this->basePath()."/" ?>assets/js/jquery.nestable.min.js"></script>
+
+
+<?php echo $this->render('layout/titulo') ?>
+
+<div class="alert alert-warning">
+  <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+De la lista de chequeo arrastre las etapas de contratación a la lista asociada y establezca el orden de la lista de chequeo asociada.  Luego de tener la lista armada presione el botón actualizar.<br>
+</div>
+
+
+
+            <div class="row">
+              <div class="col-xs-12">
+
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="row">
+                  <div class="col-sm-6">
+
+                    <!-- LISTA DE CHEQUEO -->
+                    <div class="dd" id="nestable">
+                      <?php $this->th3 = "ETAPAS DE CONTRATACION"; echo $this->render('layout/h3rojo'); ?>
+                      <ul class="dd-list"><!-- INICIO ITEMS -->
+
+
+                        <li class="dd-item dd2-item" data-id="0" id="0">
+                          <div class="dd-handle dd2-handle">
+                            <i class="normal-icon ace-icon fa fa-bars blue bigger-130"></i>
+
+                            <i class="drag-icon ace-icon fa fa-arrows bigger-125"></i>
+                          </div>
+                          <div class="dd2-content">Inicio</div>
+                        </li>
+
+                        <?php // Si esta en blanco debe poner un en blanco para poder meter los demas 
+                          foreach ($this->datos as $dato) {
+                         ?>          
+                          <li class="dd-item" data-id="<?php echo $dato["id"]?>" id="<?php echo $dato["id"]?>">
+                            <div class="dd-handle">
+                               <?php echo $dato["nombre"].' ('.$dato["id"].') '; ?>
+                            </div>
+                          </li>
+                        <?php } ?> 
+                        <!-- Fin recorrer items de etapa de contratacion para este tipo de contrato-->
+
+
+                      </ul><!-- FIN INICIO ITEMS -->
+                    </div>
+                  </div>
+                  <!-- FIN LISTA DE CHEQUEO -->
+
+                  <!-- LISTA DE CHEQUEO ASOCIADA -->
+                  <div class="vspace-16-sm"></div>
+
+                  <div class="col-sm-6">
+                    <div class="dd dd-draghandle">
+                      <?php $this->th3 = "LISTA DE CHEQUEO"; echo $this->render('layout/h3verde'); ?>
+                      <!-- LISTA DE CHEQUEO ASOCIADA -->
+                      <ul class="dd-list" id="listAsociada">
+
+
+                        <li class="dd-item dd2-item" data-id="0" id="0">
+                          <div class="dd-handle dd2-handle">
+                            <i class="normal-icon ace-icon fa fa-bars blue bigger-130"></i>
+
+                            <i class="drag-icon ace-icon fa fa-arrows bigger-125"></i>
+                          </div>
+                          <div class="dd2-content">Inicio</div>
+                        </li>
+                        <!-- Recorrer items de etapa de contratacion para este tipo de contrato-->
+
+
+                        <?php // Si esta en blanco debe poner un en blanco para poder meter los demas 
+                          foreach ($this->datos2 as $dato) {
+                         ?>          
+                          <li class="dd-item" data-id="<?php echo $dato["id"]?>" id="<?php echo $dato["id"]?>">
+                            <div class="dd-handle">
+                               <?php echo $dato["orden"].' - '.$dato["nombre"].' ('.$dato["id"].') ';?>
+                              <span class="sticker">
+                                <span class="label label-success arrowed-in">
+                                  <i class="ace-icon fa fa-check bigger-110"></i>
+                                </span>
+                              </span>
+                            </div>
+                          </li>
+                        <?php } ?> 
+                        <!-- Fin recorrer items de etapa de contratacion para este tipo de contrato-->
+
+
+                      </ul>
+                      <!-- FIN LISTA DE CHEQUEO ASOCIADA -->
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PAGE CONTENT ENDS -->
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div><!-- /.page-content-area -->
+        </div><!-- /.page-content -->
+
+
+<br />
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>
+<div id="resultado"></div>
+<?php echo $this->render('layout/iregresar') ?>    
+
+
+<script>
+$(function () {
+      $("#submitbutton").click(function () {
+        var b = $("#id").val();        
+        var c = 1;        
+        // Borrar lista anterior
+        var parametros = {
+           "id"   : b,
+         };  
+        $.ajax({
+          data:  parametros,     
+          url:   '<?php echo $this->basePath() ?><?php echo $this->lin?>od',
+          type:  'post',
+            beforeSend: function () {
+              $("#resultado").html('<h3 class="header smaller lighter grey"><i class="icon-spinner icon-spin orange bigger-125"></i></h3>');
+          },
+            success:  function (response) {
+              $("#resultado").html(response);
+          }
+        });
+        // recorrer lista de chuqeuos   
+        $("#listAsociada li").each(function (index) {              
+            var a = $(this).attr('id');
+               var parametros = {
+                "idetapa"  : a,
+                "idncar"   : b,
+                "orden"    : c
+              };   
+            //  Valdiar el id 
+            alert(' Items registrado de forma correcta !!'+a)  
+            if ( a > 0 )               
+            {
+              $.ajax({
+                data:  parametros,     
+                url:   '<?php echo $this->basePath() ?><?php echo $this->lin?>oa',
+                type:  'post',
+                beforeSend: function () {
+                    //$("#resultado").html('<h3 class="header smaller lighter grey"><i class="icon-spinner icon-spin orange bigger-125"></i></h3>');
+                },
+               success:  function (response) {
+                    //$("#resultado").html(response);
+                  //alert(' Items registrado de forma correcta !!')  
+               }
+             });  
+             c = c + 1;         
+           }// Fin actualizar items
+        }); // Fin recorrido listas de chequeo -----------------------
+
+
+     })
+  })
+
+</script>
+
+  
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+

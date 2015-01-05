@@ -1,0 +1,511 @@
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'a2',
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+<?php echo $this->render('layout/titulo') ?>
+
+
+<?php 
+foreach ($this->datSol as $dato){ ?>
+<?php } ?>
+    <table class="table table-striped table-bordered table-hover">
+        <tr class="text-success"  >
+            <td><span class="icon-ok green"> Cargo vacante :</span> <?php echo $dato['nomCar']; ?></td>
+            <td><span class="icon-ok green"> Sede :</span> <?php echo $dato['nomSed']; ?></td>
+        </tr>
+        <tr class="text-success" >    
+            <td><span class="icon-ok green"> Fecha :</span><?php echo $dato['fecDoc']; ?></td>
+            <td><span class="icon-ok green"> Numero de vacantes :</span><?php echo $dato['vacantes']; ?> </td>
+        </tr>
+        <tr class="text-success" >    
+            <td><span class="icon-ok green"> Aspirante :</span><?php echo $dato['cedula'].' - '.$dato['nombre'].' '.$dato['apellido']; ?></td>
+            <td><span class="icon-ok green"> 
+<div class="col-sm-6">                    
+                    Estado : <?php
+    $select = $form->get('estado');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?> 
+</div>
+</td>
+        </tr>        
+    </table> 
+
+<?php echo $this->render('layout/tabla_cF') ?>
+    
+   <?php 
+   $tit = '';
+   $it  = 1;   
+   $numero=1; // Id de todos los elementos
+   foreach ($this->datos as $dato){ ?>
+       <?php if ($tit!=$dato["nombre"]){ ?>
+         <tr><td><strong><?php $tit=$dato["nombre"];$ist=1; echo $it.' '.$dato["nombre"];$it++; ?></strong></td>
+            <td></td>
+            <td></td>
+            <td></td>            
+        </tr>
+          <?php } ?>
+        <tr>
+            <td>
+                <?php echo ($it-1).'.'.$ist.' '.$dato["nomItem"]; $ist++; ?></td>
+            <td width="20%" >
+                <div class="col-sm-8">
+             <?php if ($dato["idForm"]==0){  // Predeterminado texto cuando no hay formularios anclados ?>
+              <?php echo ($this->formRow($form->get('comenN')->setAttribute("value", $dato["descripcion"])
+                                                             ->setAttribute("id", $dato["idDlchq"])
+                                                             ->setAttribute("name", "texto".$dato["idDlchq"]) ));
+                     ?>
+                         
+             <?php } ?>             
+                </div>    
+            </td>
+            <td>
+              <?php if ($dato["idForm"]==0){  // Predeterminado texto cuando no hay formularios anclados ?>               
+             <div class="col-sm-8">                
+              <?php
+                $select = $form->get('estado')->setAttribute("value", $dato["estado"])
+                                              ->setAttribute("id", "estado".$dato["idDlchq"])
+                                              ->setAttribute("name", "estado".$dato["idDlchq"])
+                                              ->setValueOptions(array("0"=>"---","1"=>"Aprobado","2"=>"No aprobado")) ;
+                echo $formLabel->openTag();
+                echo $formLabel->closeTag();
+                echo $this->formSelect($select);                
+                echo $this->formElementErrors($select);
+              ?>                
+             </div>   
+              <?php }else { 
+                  // Hay formularios anclados
+                  if ($dato["tipo"]==2){ // Verificacion hoja de vida
+              ?>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin; ?>vp/<?php echo $dato["id"]?>">
+                <span class="btn btn-primary"><i class="icon-pencil"></i><?php echo $dato["nomForm"]; ?></span></a>
+              <?php                 
+                 } ?>
+              <?php 
+                  if ($dato["tipo"]==4){ // Verificacion cuestionario cargo
+                    ?>
+                    <a href="<?php echo $this->basePath() ?><?php echo $this->lin; ?>vc/<?php echo $dato["id"]?>">
+                    <span class="btn btn-primary"><i class="icon-pencil"></i><?php echo $dato["nomForm"]; ?></span></a>
+              <?php                                      
+               }
+             ?>
+              <?php 
+                  if ( ($dato["tipo"]==1)  ) { // Formularios libres
+                    ?>
+                    <a href="<?php echo $this->basePath() ?><?php echo $this->lin; ?>f/<?php echo $dato["id"]?>">
+                    <span class="btn btn-primary"><i class="icon-pencil"></i><?php echo $dato["nomForm"]; ?></span></a>
+              <?php                                      
+               }
+             ?>                
+                
+            <?php    
+               }
+             ?>   
+            </td>
+            <td>              
+
+   <?php $fileElement = $form->get('image-file')->setAttribute("name","adjunto".$dato["idDlchq"] )
+                                                ->setAttribute("id","adjunto".$dato["idDlchq"] ); ?>
+        <?php echo $this->formLabel($fileElement); ?>
+        <?php echo $this->formFile($fileElement); ?>
+   <?php echo $this->formElementErrors($fileElement); ?>                                                                                                                        
+              <hr /> 
+              <?php 
+              $idChueq = $dato['idDlchq'];
+              foreach ($this->datAdj as $dato2){ 
+               if ($dato2['idDcheq']==$idChueq){ 
+                   $ruta = $this->basePath()."/Datos/Talentohumano/Contratacion/".$dato["idCheq"]."/".$idChueq;
+                   ?>
+                <!-- Adjuntos --> 
+                <a target=_blank" href="<?php echo $ruta."/".$dato2['nombre']; ?>"><?php echo $this->render('layout/iadjunto') ?>
+                <?php 
+                echo $dato2['nombre']; ?>
+                </a>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>idad/<?php echo $dato2["id"]?>"> <?php $this->idEli = $dato2["id"]; echo $this->render('layout/ieliminar') ?> </a>
+                <hr /> 
+              <?php 
+                 }
+               } ?>              
+            </td>
+        </tr>
+    <?php 
+      $numero++; } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>
+       
+        
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>  
+
+<?php echo $this->form()->closeTag() ?>
+   
+    
+<!-- ///// EMPLEADO CONTRATATO ////// -->       
+<?php if ($this->empCreado>0) { // El empleado ya tiene guardado en tabla de empleados sus datos 
+$this->th3='Empleado registrado';
+echo $this->render('layout/h3verde');
+ } ?>
+<?php 
+//if ($this->finConta == 0)
+//{
+if ( ($this->contratado==1) and ($this->empCreado==0) ) { 
+// Abriendo etiqueta del formulario
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'ge',
+    'method' => 'post',    
+    'id' => 'formGemp',          
+    ));    
+echo $this->form()->openTag($form);    
+    ?>  
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+    <?php 
+$this->ttablas = ",,,,";
+$this->th3     = "Datos nuevo empleado";
+echo $this->render('layout/h3rojo') ?>     
+
+<?php echo $this->render('layout/tabla_c') ?>    
+    <tr><td><strong>Fecha de inicio de labores:</strong></td>
+     <td><?php
+    $name = $form->get('fecDoc');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);?>
+     </td>
+     <td><strong>Sueldo:</strong></td>
+     <td>
+
+<?php 
+$name = $form->get('id3');
+echo $this->formInput($name);    
+if ( $this->salario == 0 ){ // Manejo de escala salarial ?>
+<div class="col-sm-8">         
+    <?php
+      $select = $form->get('idEsal')->setAttribute("id","idEsal");
+      echo $this->formSelect($select);
+      echo $this->formElementErrors($select);
+   ?>
+</div>
+
+<?php }else{ // Salario digitado ?>
+
+    <div class="col-sm-6">
+     <?php
+        $name = $form->get('numero')->setAttribute("id","sueldo");
+        echo $this->formInput($name);
+        echo $this->formElementErrors($name);
+    ?>
+    </div>
+<?php } // Fin validacion si maneja escala salarial o no?>
+
+
+</td>            
+     <td></td>
+    </tr>
+    
+    <!-- Fondos prestacionales -->        
+    <tr>
+        <td><?php
+    $select = $form->get('idSal')->setAttribute("id","idSal");
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>
+     <td><?php
+    $select = $form->get('idPen')->setAttribute("id","idPen");
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+     </td>
+     <td><?php
+    $select = $form->get('idArp')->setAttribute("id","idArp");
+    echo $formLabel->openTag().'ARL';
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>
+     <td><?php
+    $select = $form->get('idCes')->setAttribute("id","idCes");
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>            
+     <td></td>
+    </tr>        
+    <tr><td>
+<?php
+    $select = $form->get('idCaja')->setAttribute("id","idCaja");
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>            
+        </td>
+     <td><?php
+    $select = $form->get('idFav')->setAttribute("id","idFav");
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+     </td>
+     <td><?php
+    $select = $form->get('idFafc')->setAttribute("id","idFafc");
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>
+     <td></td>            
+     <td></td>
+    </tr>    <!-- Fin fondos prestacionales -->        
+
+    <!-- Clasificaciones -->
+    <tr>
+     <td><strong>Tipo de empleado:</strong></td>
+     <td>    <?php
+    $select = $form->get('idTemp');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td> 
+        <td></td>
+     <td>
+
+         
+     </td>
+     
+     <td></td>
+    </tr>        
+    <tr><td><strong>Grupo de nomina:</strong>          
+        </td>
+     <td><?php
+    $select = $form->get('idGrupo')->setAttribute("id","idGrupo");
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+     </td>
+     <td><strong>Tipo de contratación:</strong>
+     </td>
+     <td>
+<?php
+    $select = $form->get('tipo2')->setAttribute("id","tipo2")->setAttribute("value", $this->idTcon );
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+    // Esconder tipo de contratacion 
+    $name = $form->get('id2'); 
+    echo $this->formInput($name);        
+?>        
+         
+     </td>            
+     <td>
+      <?php
+         if ( $this->tipCon == 3 )  // Definir los meses de trabajo de la persona
+         {
+             echo 'Definir meses de trabajo'; ?>
+             <div class="col-sm-6">
+             <?php
+                $name = $form->get('ano')->setAttribute("id","meses");
+                echo $this->formInput($name);
+                echo $this->formElementErrors($name);
+             ?>
+             </div>             
+         <?php } ?>
+     </td>
+    </tr>    <!-- Fin clasificaciones -->                    
+   <!-- Fin datos nuevo empleado -->           
+<?php echo $this->render('layout/tabla_p') ?>
+
+<?php $this->ttablas = ",,,,"; ?>     
+<?php echo $this->render('layout/tabla_c') ?>    
+    <tr><td><?php
+    $select = $form->get('idTau');
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>
+     <td><?php
+    $select = $form->get('idTau2');
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>
+     <td><?php
+    $select = $form->get('idTau3');
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>
+     <td><?php
+    $select = $form->get('idTau4');
+    echo $formLabel->openTag().$select->getLabel('label');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?></td>            
+     <td></td>
+    </tr>    
+
+    <tr>
+        <td></td>
+     <td>
+     </td>
+     <td></td>
+     <td></td>            
+     <td></td>
+    </tr>           
+<?php echo $this->render('layout/tabla_p') ?>   
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')->setAttribute("id","guardar")) ?>
+</div>      
+    
+<?php echo $this->form()->closeTag() ?>    
+<?php //}
+} // Fin validacion para no contratar mas 
+
+if ( ($this->contratado==0)and($this->empCreado==0) and ($this->finConta == 0)  ) 
+{ 
+// Fin validacion contratado      
+  // Abriendo etiqueta del formulario
+  $form->setAttributes(array(
+    'action' => $this->url.$this->lin.'adg',
+    'method' => 'post'));    
+   echo $this->form()->openTag($form);    
+   $name = $form->get('id');
+   echo $this->formInput($name);        
+    ?> 
+  <?php echo $this->render('layout/tabla_c') ?>       
+    <tr>
+    <td><strong>El aspirante será contratado ?</strong></td>
+     <td><?php
+       $select = $form->get('tipo');
+       echo $this->formSelect($select);
+       echo $this->formElementErrors($select);
+     ?>
+     </td>
+     <td></td>
+     <td></td>            
+    </tr>            
+<?php echo $this->render('layout/tabla_p'); ?>        
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('contratar')) ?>
+</div>  
+    
+<?php echo $this->form()->closeTag() ?>
+    
+<?php }// No se ha contraado ?>    
+
+<script>      
+  $( "#formGemp" ).submit(function( event ) {  
+    // Validar sueldo si hay escala salarial o no 
+    if ( $( "#id3" ).val()==0 )
+    {
+       if ( $( "#sueldo" ).val() == 0 )
+       {
+           alert('Por favor digite el sueldo asignado ');
+           $( "#sueldo" ).focus();
+           event.preventDefault();
+           return 0;
+       }
+    }else{ // Validacion por escala salarial
+       if ( $( "#idEsal" ).val() == 0 )
+       {
+           alert('Por favor selecciones la escala salarial asignada');
+           event.preventDefault();
+           return 0;
+       }                                               
+    }
+    // Validacion fondos prestacionales 
+    if ($( "#idSal" ).val()=='')
+    {
+        alert('Debe seleccionar el fondo de salud');
+        event.preventDefault();
+        return 0;
+    }    
+    if ($( "#idPen" ).val()=='')
+    {
+        alert('Debe seleccionar el fondo de pension');
+        event.preventDefault();
+        return 0;
+    }       
+    if ($( "#idArp" ).val()=='')
+    {
+        alert('Debe seleccionar la arl');
+        event.preventDefault();
+        return 0;
+    }           
+    if ($( "#idCes" ).val()=='')
+    {
+        alert('Debe seleccionar el fondo de cesantias');
+        event.preventDefault();
+        return 0;
+    }               
+    if ($( "#idCaja" ).val()=='')
+    {
+        alert('Debe seleccionar la caja de compensación');
+        event.preventDefault();
+        return 0;
+    }               
+    if ($( "#idFav" ).val()=='')
+    {
+        alert('Debe seleccionar fondo de aportes voluntarios ');
+        event.preventDefault();
+        return 0;
+    }                   
+    if ($( "#idFafc" ).val()=='')
+    {
+        alert('Debe seleccionar fondo de aportes voluntarios AFC');
+        event.preventDefault();
+        return 0;
+    }                       
+    if ($( "#idGrupo" ).val()=='')
+    {
+        alert('Debe seleccionar el grupo del empleado');
+        event.preventDefault();
+        return 0;
+    }                           
+    if ($( "#tipo2" ).val()=='')
+    {
+        alert('Debe seleccionar tipo de contrato');
+        event.preventDefault();
+        return 0;
+    }                               
+    // Validar tipo de contratacion con meses oblitarios
+    if ( $( "#id2" ).val()==3 )
+    {
+       if ( $( "#meses" ).val()==0 )
+       {    
+          alert('Por favor defina los meses que durara el contrato de esta persona');
+          $( "#meses" ).focus();
+          event.preventDefault();
+          return 0;
+       }
+    }                               
+  });
+</script>
+<?php 
+$this->lin = $this->lin.'s/'.$this->idSol;
+echo $this->render('layout/iregresar') ?>    

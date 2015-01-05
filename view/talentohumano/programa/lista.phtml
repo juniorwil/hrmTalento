@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="<?php echo $this->basePath()."/" ?>calendario/styles/glDatePicker.default.css" />
+
+<script src="<?php echo $this->basePath()."/" ?>calendario/glDatePicker.min.js"></script>
+
+<script type="text/javascript">
+        $(window).load(function()
+        {
+            $('#mydate').glDatePicker(
+            {
+                showAlways: true,
+                specialDates: 
+                [
+                   {
+                       date: new Date(2015, 1, 8),
+                       data: { message: 'Meeting every day 8 of the month' },
+                       repeatMonth: true
+                   },
+                   {
+                       date: new Date(2015, 1, 1),
+                       data: { message: 'Happy New Year!' },
+                       repeatYear: true
+                   },
+                ],
+
+                onClick: function(target, cell, date, data) 
+                {
+                    target.val(date.getFullYear() + ' - ' +
+                        date.getMonth() + ' - ' +
+                        date.getDate());
+
+                    if(data != null) {
+                        alert(data.message + '\n' + date);
+                    }
+                }
+
+            });
+        });
+</script>
+
+    
+ <input type="text" id="mydate" gldp-id="mydate"  />
+ <div gldp-el="mydate"
+      style="width:400px; height:300px; position:absolute; top:10px; left:10px;">
+ </div>

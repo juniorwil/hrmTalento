@@ -1,0 +1,20 @@
+<?php echo $this->render('layout/titulo') ?>
+
+
+<?php echo $this->render('layout/tabla_c') ?>
+
+    <?php foreach ($this->datos as $dato){ ?>
+        <tr>
+            <td><?php echo $dato["id"] ?></td>
+            <td><?php echo $dato["nom_hoj"].' '.$dato["ape_hoj"] ?></td>
+            <td><?php echo $dato["nomCar"] ?></td>
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>i/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/iitems') ?> </a>
+            </td>
+        </tr>
+    <?php } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>
+<?php 
+$this->ncol='null,null,';
+echo $this->render('layout/tabla_tb') ?> 

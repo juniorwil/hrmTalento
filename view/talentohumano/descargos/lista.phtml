@@ -1,0 +1,132 @@
+<?php echo $this->render('layout/titulo') ?>
+
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'a/'.$this->id,
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+<div class="row">    
+<div class="col-sm-4">
+<?php
+    $select = $form->get('idCar');
+    echo $formLabel->openTag().'Tipo de descargo';
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+  </div>
+<div class="col-sm-2">       
+<?php
+    $select = $form->get('estado');
+    echo $formLabel->openTag(). $select->getLabel('Estado');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+</div> 
+<div class="row">    
+<div class="col-sm-4">
+  <?php
+    $select = $form->get('idEmp');
+    echo $formLabel->openTag().'Llamado de atención para:';
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+  ?>
+</div>
+</div>    
+
+<div class="row">    
+<div class="col-sm-2">
+       <?php   
+          $name = $form->get('fechaIni');
+            echo $formLabel->openTag().'Fecha de los hechos: ';
+            echo $formLabel->closeTag();
+            echo $this->formInput($name);
+            echo $this->formElementErrors($name);
+        ?>
+     </div>     
+     
+<div class="col-sm-2">
+       <?php   
+          $name = $form->get('hora2');
+            echo $formLabel->openTag().'Hora de los hechos: ';
+            echo $formLabel->closeTag();
+            echo $this->formInput($name);
+            echo $this->formElementErrors($name);
+        ?>
+</div>
+</div>    
+
+<hr />
+<div class="row">    
+    <div class="col-sm-8">Suceso </br >
+    <?php echo ($this->formRow($form->get('comenN'))); ?>
+  </div>
+</div>    
+<hr />
+
+<div class="row">    
+    <div class="col-sm-4">
+      <?php
+        $select = $form->get('idEmpM');
+        echo $formLabel->openTag().'Involucrados';
+        echo $formLabel->closeTag();
+        echo $this->formSelect($select);
+        echo $this->formElementErrors($select);
+        ?>
+     </div>     
+</div>             
+
+<hr />
+
+<div class="row">    
+    <div class="col-sm-2">
+<?php
+    $name = $form->get('fecDoc');
+    echo $formLabel->openTag().'Citación para el: ';
+    echo $formLabel->closeTag();
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+    ?> 
+  </div>
+  <div class="col-sm-2">    
+<?php
+    $name = $form->get('hora');
+    echo $formLabel->openTag().'Hora: ';
+    echo $formLabel->closeTag();
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+  </div>
+</div>    
+<hr />
+<div class="control-group">
+    <?php echo ($this->formRow($form->get('comen'))); ?>
+</div>  
+
+
+
+
+
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>    
+<?php echo $this->form()->closeTag() ?>
+
+<?php echo $this->render('layout/iregresar') ?>    

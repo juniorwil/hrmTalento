@@ -1,0 +1,105 @@
+<?php echo $this->render('layout/titulo') ?>
+<?php
+$form = $this->form;
+$form->prepare();
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'a/'.$this->id,
+    'method' => 'post',
+    'id'     => 'formGuaradar'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+<div class="row">    
+<div class="col-sm-4">Area de capacitación:<br />    
+<?php
+    $select = $form->get('idArea');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+<div class="col-sm-4">Tipo de capacitación:<br />    
+<?php
+    $select = $form->get('tipo');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+<div class="col-sm-2">Estado:<br />    
+<?php
+    $select = $form->get('estado');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>    
+</div>
+</div> 
+<hr />
+<div class="row">    
+<div class="col-sm-6">Temática:<br />    
+    <?php echo ($this->formRow($form->get('comenN'))); ?>
+</div>  
+</div>    
+<hr />
+<div class="row">    
+<div class="col-sm-4">Centro de costos que solicita la capacitación:<br />    
+<?php
+    $select = $form->get('idCencos');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+<div class="col-sm-4">Entidad que dictara solicita la capacitación:<br />        
+<?php
+    $select = $form->get('idEnt');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+</div>    
+<hr />
+<div class="row">    
+<div class="col-sm-8">Centro de costos invitados a la capacitación:<br />        
+<?php
+    $select = $form->get('idCcosM');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+</div>    
+<hr />
+<div class="row">    
+<div class="col-sm-6">Presupuesto estimado:<br />
+<?php
+    $name = $form->get('numero');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>    
+</div>
+
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>1"> <?php echo $this->render('layout/icalendar') ?> </a>
+
+<hr />
+<div class="control-group">
+    <?php echo ($this->formRow($form->get('comen'))); ?>
+</div>  
+
+<div class="control-group">    
+<?php    
+    $name = $form->get('id'); // Id del prestamo
+    echo $this->formInput($name);    
+?>    
+<?php    
+  $name = $form->get('id'); // Id del grupo de empleado
+  echo $this->formInput($name);    
+?>    
+</div>
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>    
+<?php echo $this->form()->closeTag() ?>
+
+<?php echo $this->render('layout/iregresar') ?>    
+

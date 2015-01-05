@@ -1,0 +1,144 @@
+<?php echo $this->render('layout/titulo') ?>
+
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'a/'.$this->id,
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+
+<div class="tabbable">
+  <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+ 	   <li class="active"><a data-toggle="tab" href="#datos"><i class="green icon-edit bigger-110"></i>Basicos</a></li>
+	   <li><a data-toggle="tab" href="#clasifica"><i class="green icon-bolt bigger-110"></i>Clasificaciones</a></li>
+        </ul>
+
+            
+    <div class="tab-content">
+      <div id="datos" class="tab-pane in active"><!-- datos basicos -->  
+
+<div class="row">    
+<div class="col-sm-4">Nombre:<br />
+<?php
+    $name = $form->get('nombre');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>
+<div class="col-sm-4">Denominación:<br />
+    <?php
+    $name = $form->get('deno');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>
+</div>
+<br />          
+<div class="row">    
+<div class="col-sm-2">Plazas:<br />
+<?php
+    $name = $form->get('numero');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>
+<div class="col-sm-4">Jefe directo:<br />    
+<?php
+    $select = $form->get('idCar');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>    
+</div>
+</div>    
+<hr />
+<div class="form_element">
+<?php    
+    echo ($this->formRow($form->get('respo'))); 
+?>
+</div>  
+<div class="form_element">
+<?php    
+    echo ($this->formRow($form->get('mision'))); 
+?>
+</div>  
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+
+</div><!-- FIN PESTAÑA DATOS BASICOS -->    
+
+<div id="clasifica"  class="tab-pane in active"><!-- Clasificaciones -->              
+
+<div class="row">    
+<div class="col-sm-4">Centro de costo:<br />
+ <?php
+    $select = $form->get('idDep');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+<div class="col-sm-4">Sede:<br />    
+<?php
+    $select = $form->get('idSed');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+</div>
+<br />
+<div class="row">    
+<div class="col-sm-4">Tipo de lista de chequeo:<br />
+<?php
+    $select = $form->get('idNcar');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+<div class="col-sm-4">Grupo de dotación:<br />
+<?php
+    $select = $form->get('idGdot');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+<div class="col-sm-4">Nivel de aspecto:<br />
+    <?php
+    $select = $form->get('idNasp');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div> 
+</div>
+<br />
+<div class="row">    
+<div class="col-sm-4">Escalas salariales en las que fluctúa este cargo:<br />
+    <?php
+      $select = $form->get('idTnomm');// Uso de este ojbeto como tipo de salarios
+      echo $formLabel->openTag().' ';
+      echo $formLabel->closeTag();
+      echo $this->formSelect($select);
+      echo $this->formElementErrors($select);
+   ?>       
+</div>
+</div>    
+
+  </div><!-- Fin Clasificaciones -->
+</div><!-- Fin contenedor -->
+
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>    
+<?php echo $this->form()->closeTag() ?>
+
+
+<?php echo $this->render('layout/iregresar') ?>    

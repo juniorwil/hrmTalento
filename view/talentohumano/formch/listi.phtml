@@ -1,0 +1,82 @@
+<?php echo $this->render('layout/titulo') ?>
+
+<?php 
+$this->th3 = "Manejo formulario ".$this->nomFor;
+echo $this->render('layout/h3rojo') ?>
+
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'i/'.$this->id,
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+<div class="row">    
+<div class="col-sm-4">Ubicación:<br />
+    <?php
+         $select = $form->get('ubicacion');
+         echo $this->formSelect($select);
+         echo $this->formElementErrors($select);
+    ?>
+</div> 
+<div class="col-sm-4">Nombre:<br />    
+    <?php
+         $name = $form->get('nombre');
+         echo $this->formInput($name);
+         echo $this->formElementErrors($name);
+    ?>
+</div>
+</div>
+
+<div class="row">    
+<div class="col-sm-4">Tipo:<br />
+    <?php
+         $select = $form->get('tipo');
+         echo $this->formSelect($select);
+         echo $this->formElementErrors($select);
+    ?>               
+</div>
+<div class="col-sm-6">Items de lista (Separado por comas):<br />
+      <?php 
+         echo ($this->formRow($form->get('comenN')->setAttribute("class","span13") )); 
+      ?>        
+</div>    
+</div>
+<hr/>
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('agregar')) ?>
+</div>  
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+<?php echo $this->form()->closeTag() ?>
+<?php foreach ($this->datos as $dato){ }?>
+
+<?php echo $this->render('layout/tabla_c') ?>
+
+    <?php foreach ($this->datos as $dato){ ?>
+        <tr>
+            <td><?php echo $dato["nombre"] ?></td>
+            <td><?php echo $dato["tipIfor"] ?></td>            
+            <td><?php echo $dato["lista"] ?>              
+            </td>
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>id/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/ieliminar') ?> </a>
+            </td>            
+        </tr>
+    <?php } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>
+    
+
+        
+<?php echo $this->render('layout/iregresar') ?> 

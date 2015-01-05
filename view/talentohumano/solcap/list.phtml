@@ -1,0 +1,43 @@
+<?php echo $this->render('layout/titulo') ?>
+
+<a href="<?php echo $this->basePath() ?><?php echo $this->lin?>a"><?php echo $this->render('layout/inuevo') ?></a>
+<div id="dialog"></div>
+
+<?php echo $this->render('layout/tabla_c') ?>
+
+    <?php foreach ($this->datos as $dato){ ?>
+        <tr>
+            <td><?php echo $dato["nomArea"]; ?></td>            
+            <td><?php echo $dato["fecDoc"] ?></td>
+            <td><?php echo $dato["fecApr"] ?></td>            
+            <td>
+                <?php if ($dato["estado"]==0){ ?>
+                   <?php echo $this->render('layout/ipendiente') ?>
+                <?php } ?>
+                <?php if ($dato["estado"]==1){ ?>
+                   <?php echo $this->render('layout/iaprobado') ?>                
+                <?php } ?>
+            </td>    
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>e/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/ipersonal') ?> 
+                <?php echo '('.$dato["numEmp"].')'; ?>                 
+                </a> 
+                
+            </td>            
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>p/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/icalendar') ?> </a>
+            </td>                        
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>a/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/ieditar') ?> </a>
+            </td>            
+            <td>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>d/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/ieliminar') ?> </a>
+            </td>            
+        </tr>
+    <?php } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>
+    
+<?php 
+$this->ncol='null,null,null,null,null,null,';
+echo $this->render('layout/tabla_tb') ?> 

@@ -1,0 +1,598 @@
+<?php echo $this->render('layout/titulo') ?>
+
+<?php
+$form = $this->form;
+$form->prepare();
+?>
+
+<?php 
+$this->th3  = $this->empleado;
+echo $this->render('layout/h3rojo') ?>
+
+
+<div class="tabbable">
+  <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+	<li class="active">
+	    <a data-toggle="tab" href="#datos">Datos basicos</a>
+	</li>
+<?php if ($this->id > 0){?>
+	<li>
+	    <a data-toggle="tab" href="#estudios">Estudios realizados</a>
+	</li>
+
+	<li>
+	   <a data-toggle="tab" href="#experiencia">Experiencia laboral</a>
+	</li>
+	<li>
+	   <a data-toggle="tab" href="#referencias">Referencias personales</a>
+	</li>        
+<?php }?>        
+  </ul>
+
+  <div class="tab-content">
+	<div id="datos" class="tab-pane in active">
+            <p>
+                
+                
+<?php
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'a',
+    'method' => 'post',
+    'id'     => 'formGuardar'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+<div class="row">
+<div class="col-sm-4">Cedula:<br />
+<?php
+    $name = $form->get('cedula');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+    ?>
+</div>
+</div>    
+<div class="row">    
+<div class="col-sm-8">Nombre:<br />
+<?php
+    $name = $form->get('nombre');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>
+<div class="col-sm-8">Apellidos:<br />    
+<?php
+    $name = $form->get('apellido1');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>
+</div>            
+<hr />            
+<div class="row">
+<div class="col-sm-2">Sexo:<br />    
+<?php
+    $select = $form->get('sexo');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>    
+   
+<div class="col-sm-2">Fecha de nacimiento:<br />    
+<?php
+    $name = $form->get('fecDoc') ;
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>    
+</div>   
+<div class="col-sm-2">Estado civil:<br />        
+<?php
+    $select = $form->get('estCivil');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>
+</div>    
+<div class="row">
+<div class="col-sm-2">Dirección:<br />    
+<?php
+    $name = $form->get('dir');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>                                                                                                     
+<div class="col-sm-2">Telefono:<br />        
+<?php
+    $name = $form->get('numero');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>
+</div>
+<div class="col-sm-8">e-mail:<br />    
+<?php
+    $name = $form->get('email');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>    
+</div>
+</div>    
+<hr />
+<div class="col-sm-6">   
+<?php
+    $select = $form->get('idCarM')->setAttribute('id', "idCarM");
+    echo $formLabel->openTag().'Postulado a los siguientes cargos';
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+</div>    
+<br /><br /><br /><br /><br /><br /><br />
+
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>    
+
+<?php echo $this->form()->closeTag() ?>                                                                          
+                
+                
+                
+            </p>
+	</div><!-- FIN DATOS BASICOS -->
+        
+<?php if ($this->id > 0){?>
+        
+	<div id="estudios" class="tab-pane"><!-- ESTUDIOS -->
+            <p>
+                
+                
+<?php 
+$this->idModal = "agregarEst";
+$this->botModal = "Agregar un estudio realizado"; ?>    
+<script>
+  $(function() {
+    $( "#<?php echo 'v'.$this->idModal ?>" ).dialog({
+      autoOpen: false,
+      height: 500,
+      width: 800,      
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      },
+      buttons: {
+          "Agregar estudio realizado": function() {          
+           var id      = $("#id").val();
+           var idNest  = $("#idNest").val();
+           var inst    = $("#comenN").val();
+           var titulo  = $("#comenN2").val();
+           
+           if($("#comenN").val().length < 1) {  
+              alert("Debe escribir el nombre de la institución");  
+              return false;  
+            }  
+
+           if($("#comenN2").val().length < 1) {  
+              alert("Debe escribir el titulo obtenido");  
+              return false;  
+            }  
+            $( "#<?php echo 'v'.$this->idModal ?>" ).show();
+            $( "#formGuaradarE" ).submit();          
+                      
+          },
+          Cancel: function() {
+          $( this ).dialog( "close" );          
+        }
+      }
+    });  
+    $( "#<?php echo $this->idModal ?>" ).click(function() {
+      $( "#<?php echo 'v'.$this->idModal ?>" ).dialog( "open" );
+    });
+  });
+</script>
+
+<div id="<?php echo 'v'.$this->idModal ?>" title="<?php echo $this->botModal ?>">
+<!-- MODAL ESTUDIOS REALIZADOS -->    
+<?php
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'he',
+    'method' => 'post',
+    'id'     => 'formGuaradarE'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>      
+<div class="row">  
+<div class="col-sm-10">
+        Institución
+        <?php echo ($this->formRow($form->get('comenN'))); ?>
+</div>        
+</div>        
+<hr />
+<div class="row">    
+<div class="col-sm-12">    
+Nivel académico
+<?php
+    $select = $form->get('idNest');
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>   
+</div>
+</div>
+<hr />
+<div class="row">    
+<div class="col-sm-6">        
+Fecha de graduación
+<?php
+    $name = $form->get('fecDoc');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);?>                        
+</div>
+</div>        
+<hr />
+<div class="row">    
+<div class="col-sm-6">        
+Titulo obtenido
+<?php $comen = $this->formRow($form->get('comenN2')); 
+        echo $comen;
+        ?>
+</div>
+</div>    
+<hr />
+<?php echo $this->form()->closeTag() ?>    
+    
+</div>
+ 
+<?php echo $this->render('layout/botonModal');// Boton ventana modal ?> 
+
+<!-- Listado de estudios --> 
+<?php foreach ($this->datEst as $dato){ ?>
+<div class="well well-large">
+    
+   <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>hed/<?php echo $dato["id"]?>"><?php echo $this->render('layout/ieliminarCaja') ?></a>
+           
+ <h4 class="blue"> 
+     <?php echo $dato['titulo']; ?>
+ </h4>
+ <h5>
+     <?php echo $dato['nomNest']; ?>
+ </h5>         
+ <h6>   
+     <?php echo $dato['instituto']; ?>
+ </h6>    
+ <h6>   
+     <?php echo $dato['fecha']; ?>
+ </h6>        
+</div>
+<?php } ?>
+<!-- Fin listado de estudios -->                 
+                
+                
+                
+            </p>
+	</div><!-- FIN ESTUDIOS -->
+
+	<div id="experiencia" class="tab-pane"><!-- REFERENCIAS LABORALES -->   
+            <p>                
+               
+
+<?php 
+$this->idModal = "agregarExp";
+$this->botModal = "Agregar un experiencia laboral"; ?>    
+<script>
+  $(function() {
+    $( "#<?php echo 'v'.$this->idModal ?>" ).dialog({
+      autoOpen: false,
+      height: 500,
+      width: 800,      
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      },
+      buttons: {
+          "Agregar experiencia realizado": function() {          
+           var id      = $("#id").val();
+           var inst    = $("#comenN").val();
+           var titulo  = $("#comenN2").val();
+           
+
+            $( "#formGuaradarL" ).submit();          
+                      
+          },
+          Cancel: function() {
+          $( this ).dialog( "close" );          
+        }
+      }
+    });  
+    $( "#<?php echo $this->idModal ?>" ).click(function() {
+      $( "#<?php echo 'v'.$this->idModal ?>" ).dialog( "open" );
+    });
+  });
+</script>
+
+<div id="<?php echo 'v'.$this->idModal ?>" title="<?php echo $this->botModal ?>">
+    
+<?php
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'hl',
+    'method' => 'post',
+    'id'     => 'formGuaradarL'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>      
+    
+<table>    
+    <tr>
+        <td>Empresa</td>
+        <td><?php $comen = $this->formRow($form->get('comenN2')); 
+        echo $comen;
+        ?></td>    
+    </tr>   
+    
+    <tr>
+        <td>Cargo</td>
+        <td><?php echo ($this->formRow($form->get('comenN'))); ?></td>    
+    </tr>    
+
+    <tr>
+        <td>Funciones</td>
+        <td><?php $comen = $this->formRow($form->get('comenN3')); 
+        echo $comen;
+        ?></td>    
+    </tr>   
+    
+</table>    
+<table>    
+    <tr>
+        <td>Contacto</td>
+        <td>
+        <?php
+         $name = $form->get('nombre1');
+         echo $this->formInput($name);
+         echo $this->formElementErrors($name);
+        ?>                
+        </td>    
+
+        <td>Telefonos</td>
+        <td>
+        <?php
+         $name = $form->get('telefonos');
+         echo $this->formInput($name);
+         echo $this->formElementErrors($name);
+        ?>                
+        </td>    
+    </tr>           
+    
+    <tr>
+        <td>Fecha inicio de labores</td>
+        <td>
+<?php
+    $name = $form->get('fechaIni');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>    
+            
+        </td>    
+
+        <td>Fecha fin de labores</td>
+        <td>
+<?php
+    $name = $form->get('fechaFin');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+?>    
+            
+        </td>    
+    </tr>                   
+    
+</table>
+<?php echo $this->form()->closeTag() ?>    
+    
+</div>
+ 
+<?php echo $this->render('layout/botonModal') ?> 
+
+<!-- Listado de experiencias laborales --> 
+<?php foreach ($this->datExp as $dato){ ?>
+<div class="well well-large">
+    
+   <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>hld/<?php echo $dato["id"]?>"><?php echo $this->render('layout/ieliminarCaja') ?></a>
+           
+ <h4 class="blue"> 
+     <?php echo $dato['cargo']; ?>
+ </h4>
+ <h5>
+     <?php echo $dato['empresa']; ?>
+ </h5>         
+ <h6>   
+     <?php echo $dato['contacto']; ?>
+ </h6>    
+ <h6>   
+     <?php echo $dato['telefonos']; ?>
+ </h6>        
+   
+</div>
+<?php } ?>
+<!-- Fin listado experiencia laboral -->                     
+                
+                
+                
+                
+            </p>
+	</div><!-- FIN REFERENCIAS LABORALES -->   
+
+	<div id="referencias" class="tab-pane"><!-- REFERENCIAS PERSONALES -->   
+            <p>
+                
+                
+<?php 
+$this->idModal = "agregarRep";
+$this->botModal = "Agregar un referencia"; ?>    
+<script>
+  $(function() {
+    $( "#<?php echo 'v'.$this->idModal ?>" ).dialog({
+      autoOpen: false,
+      height: 350,
+      width: 800,      
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      },
+      buttons: {
+          "Agregar estudio realizado": function() {          
+           var id      = $("#id").val();
+
+           
+
+            $( "#formGuaradarR" ).submit();          
+                      
+          },
+          Cancel: function() {
+          $( this ).dialog( "close" );          
+        }
+      }
+    });  
+    $( "#<?php echo $this->idModal ?>" ).click(function() {
+      $( "#<?php echo 'v'.$this->idModal ?>" ).dialog( "open" );
+    });
+  });
+</script>
+
+<div id="<?php echo 'v'.$this->idModal ?>" title="<?php echo $this->botModal ?>">
+    
+<?php
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'hr',
+    'method' => 'post',
+    'id'     => 'formGuaradarR'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>        
+<table>    
+    <tr>
+        <td>Nombres y apellidos</td>
+        <td>
+        <?php
+         $name = $form->get('nombre2')->setAttribute("class","span5");
+         echo $this->formInput($name);
+         echo $this->formElementErrors($name);
+        ?>                
+        </td>    
+    </tr>
+    <tr>
+        <td>Telefonos</td>
+        <td>
+        <?php
+         $name = $form->get('telefonos2');
+         echo $this->formInput($name);
+         echo $this->formElementErrors($name);
+        ?>                
+        </td>    
+    </tr>           
+    <tr>
+        <td>Dirección de residencia</td>
+        <td>
+        <?php
+         $name = $form->get('dir2')->setAttribute("class","span4");
+         echo $this->formInput($name);
+         echo $this->formElementErrors($name);
+        ?>                
+        </td>    
+    </tr>               
+    <tr>
+        <td>Ocupación</td>
+        <td>
+        <?php
+         $name = $form->get('ocupacion')->setAttribute("class","span4");
+         echo $this->formInput($name);
+         echo $this->formElementErrors($name);
+        ?>              
+        </td>    
+    </tr>               
+    
+</table>
+<?php echo $this->form()->closeTag() ?>    
+    
+</div>
+ 
+<?php echo $this->render('layout/botonModal') ?> 
+
+<!-- Listado de referencias personales --> 
+<?php foreach ($this->datRep as $dato){ ?>
+<div class="well well-large">
+    
+   <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>hrd/<?php echo $dato["id"]?>"><?php echo $this->render('layout/ieliminarCaja') ?></a>
+           
+ <h4 class="blue"> 
+     <?php echo $dato['nombres']; ?>
+ </h4>
+ <h5>
+     <?php echo $dato['telefonos']; ?>
+ </h5>         
+ <h6>   
+     <?php echo $dato['dirResi']; ?>
+ </h6>    
+ <h6>   
+     <?php echo $dato['ocupacion']; ?>
+ </h6>        
+   
+</div>
+<?php } ?>                
+                
+                
+                
+            </p>
+	</div><!-- FIN REFERENCIAS PERSONALES -->       
+<?php } ?>        
+   </div>
+</div>
+
+
+   
+<?php echo $this->render('layout/iregresar') ?>    
+
+<script type="text/javascript">
+$(function(){
+  $( "#formGuardar" ).submit(function( event ) {
+     var a = $("#idCarM").val(); 
+     if (a == null ) 
+     { 
+        alert( "Debe postularse al menos a un cargo." );
+        event.preventDefault();
+     }
+     
+  });    
+})  
+</script>

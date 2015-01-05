@@ -1,0 +1,1 @@
+[31-May-2014 19:53:52 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home/tecnolog/public_html/nis/module/Talentohumano/view/talentohumano/nivelestudios/index.phtml on line 1

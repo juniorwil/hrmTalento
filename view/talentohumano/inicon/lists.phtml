@@ -1,0 +1,129 @@
+<?php echo $this->render('layout/titulo') ?>
+<style>
+
+.progress .progress-bar {
+    box-shadow: none;
+    line-height: 18px;
+}
+.progress-bar {
+    background-color: rgb(42, 145, 216);
+}
+.progress-bar {
+    float: left;
+    width: 0px;
+    height: 100%;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    background-color: rgb(166, 139, 202);
+    box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.15) inset;
+    transition: width 0.6s ease 0s;
+}
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+}
+</style>
+<?php foreach ($this->datos as $dato){ ?>
+<?php } ?>
+    <table class="table table-striped table-bordered table-hover">
+        <tr class="text-success"  >
+            <td><span class="icon-ok green"> Cargo vacante :</span> <?php echo $dato['nomCar']; ?></td>
+            <td><span class="icon-ok green"> Sede :</span> <?php echo $dato['nomSede']; ?></td>
+        </tr>
+        <tr class="text-success" >    
+            <td><span class="icon-ok green"> Fecha :</span><?php echo $dato['fecDoc']; ?></td>
+            <td><span class="icon-ok green"> Numero de vacantes :</span><?php echo $dato['vacantes']; ?> </td>
+        </tr>
+    </table> 
+    
+	
+				
+
+<?php echo $this->render('layout/tabla_c') ?>
+  <?php foreach ($this->datos as $dato){ ?>
+     <tr>
+        <td><?php echo 'c.c. '.$dato["cedula"].' - '.$dato["nombre"].' '.$dato["apellido"] ?></td>
+        <td>
+          <?php 
+          // TOTAL ITEMS ETAPA
+          $total = 0;$totCal = 0;
+          foreach ($this->datosT as $datot){ 
+            if ($dato["id"]==$datot['id']){
+                $total = $datot['estado'];
+              }
+           }
+          // TOTAL CALIFICADO ITEMS ETAPA
+          $totalC = 0;$totCal = 0;
+          foreach ($this->datosTc as $datotc){ 
+            if ($dato["id"]==$datotc['id']){
+                $totalC = $datotc['estado'];
+              }
+           }
+           $por = 0;
+           if ($total>0)
+              $por = number_format(($totalC*100)/$total,2);           
+          ?>
+          <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>i/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/irevision') ?> </a>
+          <div class="progress progress-striped pos-rel" data-percent="<?php echo $por;?>%">
+           <div class="progress-bar progress-bar-success" style="width:<?php echo $por;?>%;"></div>
+	  </div>
+       </td>
+       
+       <td>
+          <?php if ($dato["estado"]==1){ ?> 
+          <?php 
+          // TOTAL ITEMS ETAPA
+          $total = 0;$totCal = 0;
+          foreach ($this->datosT2 as $datot){ 
+            if ($dato["id"]==$datot['id']){
+                $total = $datot['estado'];
+              }
+           }
+          // TOTAL CALIFICADO ITEMS ETAPA
+          $totalC = 0;$totCal = 0;
+          foreach ($this->datosTc2 as $datotc){ 
+            if ($dato["id"]==$datotc['id']){
+                $totalC = $datotc['estado'];
+              }
+           }
+           $por = 0;
+           if ($total>0)
+              $por = number_format(($totalC*100)/$total,2);           
+          ?>           
+          <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>ad/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/iadministracion') ?> </a>
+          <div class="progress progress-striped pos-rel" data-percent="<?php echo $por;?>%">
+           <div class="progress-bar progress-bar-success" style="width:<?php echo $por;?>%;"></div>
+	  </div>           
+          <?php } ?>     
+       </td>     
+       <td><?php
+           $this->idR = 25; // Id del reporte
+           $this->idP = $dato["id"];
+           echo $this->render('layout/ipdf'); // Fin parametros                   
+        ?></td>       
+       <td>
+        <?php 
+        $por=0;
+        if ($dato["contratado"]==1) { // CONTRATADO  ?> 
+          <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>ae/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/iok') ?> </a>
+        <?php } ?>                 
+        <?php  
+        if ($dato["empleado"]==1) { // REGISTRADO COMO EMPLEADO ?> 
+          <?php echo $this->render('layout/iregistro') ?>
+        <?php } ?>                                 
+        <?php if ($dato["contratado"]==2) { // NO CONTRATADO?> 
+          <?php echo $this->render('layout/irechazado') ?> </a>
+        <?php } ?>  
+        <?php if ($dato["estado"]==2) { // RECHAZADO?> 
+          <?php echo $this->render('layout/irechazado') ?> </a>
+        <?php } ?>         
+       </td>                               
+   </tr>
+ <?php } ?>        
+<?php echo $this->render('layout/tabla_p') ?>
+    
+<?php 
+$this->ncol='null,null,null,';
+echo $this->render('layout/tabla_tb') ?>        
+   
+<?php echo $this->render('layout/iregresar') ?>     

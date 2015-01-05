@@ -1,0 +1,42 @@
+<?php echo $this->render('layout/titulo') ?>
+
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'o',
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+Opcion a
+<?php echo ($this->formRow($form->get('comenN')->setAttribute("name","comenNa")->setAttribute("value",$datos['a']) )); ?>
+<hr />
+Opcion b
+<?php echo ($this->formRow($form->get('comenN')->setAttribute("name","comenNb")->setAttribute("value",$datos['b']) )); ?>
+<hr />
+Opcion c
+<?php echo ($this->formRow($form->get('comenN')->setAttribute("name","comenNc")->setAttribute("value",$datos['c']) )); ?>
+<hr />
+Opcion d
+<?php echo ($this->formRow($form->get('comenN')->setAttribute("name","comenNd")->setAttribute("value",$datos['d']) )); ?>
+<hr />
+Opcion e
+<?php echo ($this->formRow($form->get('comenN')->setAttribute("name","comenNe")->setAttribute("value",$datos['e']) )); ?>
+<hr />
+
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>    
+<?php echo $this->form()->closeTag() ?>
+

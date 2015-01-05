@@ -1,0 +1,121 @@
+<?php echo $this->render('layout/titulo') ?>
+<?php
+$form = $this->form;
+$form->prepare();
+
+$form->setAttributes(array(
+    'action' => $this->url.$this->lin.'a',
+    'method' => 'post'
+));
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+?>
+
+<div class="row">    
+    <div class="col-sm-3">
+  <?php // Evaluador
+    $select = $form->get('idEmp');
+    echo $formLabel->openTag().'Evaluador(es)';
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+  ?>                
+    </div>    
+  <div class="col-sm-4">Pregunta:<br />
+    <?php echo ($this->formRow($form->get('comenN2'))); ?>
+  </div>                                                 
+</div>
+<hr />
+<div class="row">    
+    <div class="col-sm-3">
+  <?php // Acusados
+    $select = $form->get('idEmp2');
+    echo $formLabel->openTag().'Acusado(s)';
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+  ?>                
+    </div>      
+  <div class="col-sm-3">Respuesta:
+    <?php echo ($this->formRow($form->get('comenN') )); ?>
+  </div>                                                 
+</div>
+<hr />
+<div class="row">     
+  <div class="col-sm-3">
+     <?php echo $this->formElement($form->get('send')) ?>
+  </span>
+  </div>
+</div>
+
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+
+<div id='resultado' ></div>
+<script>
+$(function () {
+    
+var a = $("#id").val();
+var b = $("#idEmp").val();
+var e = $("#idEmp2").val();
+var c = $("#comenN2").val();
+var d = $("#comenN").val();
+          
+var parametros = {
+        "id"    : a,
+        "idEmp" : b,
+        "idEmp2": e,
+        "preg"  : c,                
+        "resp"  : d,                
+};          
+$.ajax({
+  data:  parametros,		 
+  url:   '<?php echo $this->basePath() ?><?php echo $this->lin?>hd',
+  type:  'post',
+  beforeSend: function () {
+        $("#resultado").html('<h3 class="header smaller lighter grey"><i class="icon-spinner icon-spin orange bigger-125"></i></h3>');
+    },
+  success:  function (response) {
+        $("#resultado").html(response);
+   }
+});          
+          
+      $("#submitbutton").click(function () {
+          var a = $("#id").val();
+          var b = $("#idEmp").val();
+          var c = $("#comenN2").val();
+          var e = $("#idEmp2").val();
+          var d = $("#comenN").val();
+          
+          var parametros = {
+                "id"    : a,
+                "idEmp" : b,
+                "idEmp2": e,
+                "preg"  : c,                
+                "resp"  : d,                
+          };            
+          $.ajax({
+                data:  parametros,		 
+                url:   '<?php echo $this->basePath() ?><?php echo $this->lin?>hd',
+                type:  'post',
+                beforeSend: function () {
+                    $("#resultado").html('<h3 class="header smaller lighter grey"><i class="icon-spinner icon-spin orange bigger-125"></i></h3>');
+                },
+               success:  function (response) {
+                    $("#resultado").html(response);
+                    $("#idEmp").val('');
+                    $("#comenN2").val('');                    
+               }
+          });          
+     })
+  })
+
+</script>
+
+
+<?php echo $this->render('layout/iregresar') ?>    

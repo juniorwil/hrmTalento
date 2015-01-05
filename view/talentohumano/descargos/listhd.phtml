@@ -1,0 +1,70 @@
+<hr />
+<div class="col-sm-6">
+    <div class="widget-box">
+	<div class="widget-header">
+	    <h4 class="widget-title lighter smaller">
+	    <i class="ace-icon fa fa-comment blue"></i>
+	      Bitacora del descargo
+ 	    </h4>
+	</div>
+    <div class="widget-body">
+    <div class="widget-main no-padding">
+       <!-- #section:pages/dashboard.conversations -->
+	<div class="dialogs">
+         <?php foreach($this->datos as $dat){ ?>            
+	    <div class="itemdiv dialogdiv">
+	        <div class="user">
+		    <?php echo $this->render('layout/ijuez') ?>
+		</div>
+                <div class="body">
+		    <div class="time">
+                    <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>hdd/<?php echo $dat["id"]?>"> <?php echo $this->render('layout/ieliminar') ?> </a>
+		        <i class="ace-icon fa fa-clock-o"></i>
+			<span class="green"><?php echo $dat['hora'] ?></span>
+		    </div>
+                    <div class="name">
+		        <a href="#"><?php echo $dat['nombre'].' '.$dat['apellido']  ?></a>
+		    </div>
+		    <div class="text"><?php echo $dat['pregunta'] ?></div>
+                        <div class="tools">
+			    <a href="#" class="btn btn-minier btn-info">
+			        <i class="icon-only ace-icon fa fa-share"></i>
+			    </a>
+			</div>
+		    </div>
+		</div>
+	    <div class="itemdiv dialogdiv">
+	        <div class="user">
+		    <?php echo $this->render('layout/iresponder') ?>
+		</div>
+                <div class="body">
+		    <div class="time">
+		        <i class="ace-icon fa fa-clock-o"></i>
+			<span class="green"><?php echo $dat['hora'] ?></span>
+		    </div>
+                    <div class="name">
+                        <a href="#"><span class="orange"><?php echo $dat['nombreR'].' '.$dat['apellidoR']  ?></span></a>
+		    </div>
+		    <div class="text"><?php echo $dat['respuesta'] ?></div>
+                        <div class="tools">
+			    <a href="#" class="btn btn-minier btn-info">
+			        <i class="icon-only ace-icon fa fa-share"></i>
+			    </a>
+			</div>
+		    </div>
+		</div>            
+         <?php } ?>
+            </div><!-- /.widget-body -->
+	</div><!-- /.widget-box -->
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+        
+        
+        ddd
+        
+    </div>
+    
+    
+</div><!-- /.row -->
+<hr />
+

@@ -1,0 +1,153 @@
+<?php
+$form = $this->form;
+$form->prepare();
+
+
+// Get the form label plugin
+$formLabel = $this->plugin('formLabel');
+// Abriendo etiqueta del formulario
+echo $this->form()->openTag($form);
+?>
+<div class="control-group">    
+<?php    
+    $name = $form->get('id');
+    echo $this->formInput($name);    
+?>    
+</div>
+ 
+<?php echo $this->render('layout/titulo') ?>
+
+<?php
+    $select = $form->get('estado');
+    echo $formLabel->openTag() . $select->getLabel('Estado');
+    echo $formLabel->closeTag();
+    echo $this->formSelect($select);
+    echo $this->formElementErrors($select);
+?>
+
+<?php echo $this->render('layout/tabla_c') ?>
+
+   <!-- Datos fijos -->   
+    <tr><td><strong>El aspirante será contratado ?</strong></td>
+     <td><?php
+       $select = $form->get('tipo');
+       echo $this->formSelect($select);
+       echo $this->formElementErrors($select);
+     ?>
+     </td>
+     <td></td>
+     <td></td>            
+     <td></td>
+    </tr>   
+    <tr><td><strong>Fecha de inicio de labores</strong></td>
+     <td></td>
+     <td></td>
+     <td></td>            
+     <td></td>
+    </tr>
+   <!-- Fin datos fijos -->
+
+
+   <?php 
+   $tit = '';
+   $it  = 1;   
+   $numero=1; // Id de todos los elementos
+   foreach ($this->datos as $dato){ ?>
+
+       <?php if ($tit!=$dato["nombre"]){ ?>
+         <tr><td><strong><?php $tit=$dato["nombre"];$ist=1; echo $it.' '.$dato["nombre"];$it++; ?></strong></td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>
+        </tr>
+          <?php } ?>
+        <tr>
+            <td><?php echo ($it-1).'.'.$ist.' '.$dato["nomItem"]; $ist++; ?></td>
+            <td>
+             <?php if ($dato["idForm"]==0){  // Predeterminado texto cuando no hay formularios anclados ?>
+              <?php echo ($this->formRow($form->get('comenN')->setAttribute("value", $dato["descripcion"])
+                                                             ->setAttribute("id", $dato["idDlchq"] ) ));
+                     ?>
+                         
+             <?php } ?>                
+            </td>
+            <td>
+              <?php if ($dato["idForm"]==0){  // Predeterminado texto cuando no hay formularios anclados ?>               
+              <?php
+                $select = $form->get('estado')->setAttribute("value", $dato["estado"])
+                                              ->setAttribute("id", "e".$dato["idDlchq"])
+                                              ->setValueOptions(array("0"=>"---","1"=>"Aprobado","2"=>"No aprobado")) ;
+                echo $formLabel->openTag();
+                echo $formLabel->closeTag();
+                echo $this->formSelect($select);                
+                echo $this->formElementErrors($select);
+              ?>                
+             <?php }else {?>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin; echo $dato["tipo"]; ?>/<?php echo $dato["id"]?>">
+                <span class="btn btn-primary"><i class="icon-pencil"></i><?php echo $dato["nomForm"]; ?></span></a>
+            <?php                 
+             }
+             ?>   
+            </td>
+            <td><a href="javascript:iniciar(<?php echo $dato["id"] ?>);"><?php echo $this->render('layout/iadjunto') ?></a></td>
+            <td>            
+            </td>            
+        </tr>
+    <?php 
+      $numero++; } ?>
+        
+<?php echo $this->render('layout/tabla_p') ?>
+       
+        
+<div class="form-actions">    
+  <?php echo $this->formElement($form->get('send')) ?>
+</div>  
+
+<?php echo $this->form()->closeTag() ?>
+
+<div id="resultado"></div>
+<script>  
+// Guardar items de la lista de chequeo
+$(function (){  
+  var idCheq   = $("#id").val();
+  $('#submitbutton').click(function(){  
+    // Guardar datos
+    $('.comenN').each(function(indice, elemento) {        
+       var id      = $(this).attr('id');
+       var texto   = $("#"+id).val();
+       var estado  = $("#e"+id).val();
+       var estadoC = $("#estado").val();
+       var parametros = {            
+            "id"      : id,   
+            "idL"     : idCheq,   
+            "texto"   : texto,
+            "estado"  : estado,
+            "estadoC" : estadoC,
+       };         
+       $.ajax({
+             data:  parametros,     
+             type:  'post',
+             url:   '<?php echo $this->basePath() ?><?php echo $this->lin?>a',
+             beforeSend: function () {
+                 $("#resultado").html('<h3 class="header smaller lighter grey"><i class="icon-spinner icon-spin orange bigger-125"></i></h3>Recalculando por favor espere...');
+             },
+              success:  function (response) {
+                 $("#resultado").html(response);  
+                 //   alert("Cuotas registradas de forma correcta")
+              }
+         }); // Fin ajax                                                                                                                  
+               
+    }); // Recorrido de los elemenos texto para guardar
+    alert("Cuotas registradas de forma correcta")
+      
+     
+
+  });// Fin click en el boton guardar   
+  //  
+})
+</script>
+
+
+
+<?php echo $this->render('layout/iregresar') ?>    
