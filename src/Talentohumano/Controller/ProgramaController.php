@@ -132,5 +132,23 @@ class ProgramaController extends AbstractActionController
           
    }
    //----------------------------------------------------------------------------------------------------------
+
+   // Programación *********************************************************************************************
+   public function listpAction() 
+   { 
+      $form = new Formulario("form");
+      //  valores iniciales formulario   (C)
+      $id = (int) $this->params()->fromRoute('id', 0);
+      $form->get("id")->setAttribute("value",$id);                       
+
+      $this->dbAdapter=$this->getServiceLocator()->get('Zend\Db\Adapter');
+      $d = New AlbumTable($this->dbAdapter);      
+      
+      // ------------------------ Fin valores del formulario 
+      $view = new ViewModel();        
+      $this->layout("layout/blancoC");
+      return $view;
+
+   } // Fin actualizar datos       
         
 }

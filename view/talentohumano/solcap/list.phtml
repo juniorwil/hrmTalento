@@ -25,7 +25,10 @@
                 
             </td>            
             <td>
-                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>p/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/icalendar') ?> </a>
+                <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>p/<?php echo $dato["id"]?>"> <?php 
+                 $this->idE = $dato["id"];  
+                 $this->tip = 1;
+                echo $this->render('layout/icalendar') ?> </a>
             </td>                        
             <td>
                 <a href="<?php echo $this->basePath() ?><?php echo $this->lin?>a/<?php echo $dato["id"]?>"> <?php echo $this->render('layout/ieditar') ?> </a>

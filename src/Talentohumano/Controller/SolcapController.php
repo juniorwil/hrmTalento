@@ -43,10 +43,11 @@ class SolcapController extends AbstractActionController
                                             inner join n_cencostos b on b.id=a.idCcos
                                             inner join t_areas_capa c on c.id=a.idArea
                                             left join t_sol_cap_i_e d on d.idSol = a.id   
-                                            group by d.idSol
+                                            group by a.id 
                                             order by a.fecDoc desc "),            
             "ttablas"   =>  $this->ttab,
-            "lin"       =>  $this->lin,            
+            "lin"       =>  $this->lin,        
+            'url'     => $this->getRequest()->getBaseUrl(),    
             "flashMessages" => $this->flashMessenger()->getMessages(), // Mensaje de guardado                
         );                
         return new ViewModel($valores);
