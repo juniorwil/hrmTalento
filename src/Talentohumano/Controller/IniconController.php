@@ -381,7 +381,7 @@ class IniconController extends AbstractActionController
             $u->actRegistro($data, $datosE, $idCcos);
             $d = New AlbumTable($this->dbAdapter); 
 
-            $datEmp = $d->getGeneral1("select id from a_empleados a where a.CedEmp = ".$cedula);
+            $datEmp = $d->getGeneral1("select id from a_empleados a where a.CedEmp = '".$cedula."'");
             $idEmp = $datEmp['id'];
 
             $d->modGeneral( 'update t_lista_cheq set empleado=1 where id='.$data->id );                                             

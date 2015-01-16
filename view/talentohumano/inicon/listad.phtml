@@ -21,7 +21,10 @@ echo $this->form()->openTag($form);
 
 
 <?php 
-foreach ($this->datSol as $dato){ ?>
+$salario = 0; // Si no maneja sacala salarial
+foreach ($this->datSol as $dato){ 
+   $salario = $dato['salario'];
+    ?>
 <?php } ?>
     <table class="table table-striped table-bordered table-hover">
         <tr class="text-success"  >
@@ -208,7 +211,7 @@ if ( $this->salario == 0 ){ // Manejo de escala salarial ?>
 
     <div class="col-sm-6">
      <?php
-        $name = $form->get('numero')->setAttribute("id","sueldo");
+        $name = $form->get('numero')->setAttribute("id","sueldo")->setAttribute("value", $salario );
         echo $this->formInput($name);
         echo $this->formElementErrors($name);
     ?>
